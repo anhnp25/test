@@ -4,7 +4,7 @@ services:
   frontend:
     image: node:16.18.1-alpine
     container_name: frontend
-    command: ["./command.sh"]
+    command: ["/bin/sh", "./command.sh"]
     build: 
       dockerfile: Dockerfile
       context: ./frontend
