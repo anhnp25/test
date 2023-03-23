@@ -16,38 +16,38 @@ services:
     ports:
       - 3001:3001
     
-  # db:
-  #   image: postgres:12-alpine
-  #   container_name: db
-  #   restart: always
-  #   ports:
-  #     - 5432:5432
-  #   env_file:
-  #     - ./postgres/.env
-  #   volumes:
-  #     - db:/var/lib/postgresql/data
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "pg_isready"]
-  #     interval: 1s
-  #     timeout: 5s
-  #     retries: 10
+  db:
+    image: postgres:12-alpine
+    container_name: db
+    restart: always
+    ports:
+      - 2345:5432
+    env_file:
+      - ./postgres/.env
+    volumes:
+      - db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
 
-  # backend:
-  #   image: node:16.18.1-alpine
-  #   container_name: backend
-  #   command: ["./command.sh"]
-  #   build: 
-  #     dockerfile: Dockerfile
-  #     context: ./backend
-  #   volumes:
-  #     - "./backend:/app"
-  #     - "/app/node_modules"
-  #   ports:
-  #     - 3000:3000
-  #   depends_on:
-  #     - db
-  #   links:
-  #     - db
+  backend:
+    image: node:16.18.1-alpine
+    container_name: backend
+    command: ["/bin/sh", "./command.sh"]
+    build: 
+      dockerfile: Dockerfile
+      context: ./backend
+    volumes:
+      - "./backend:/app"
+      - "/app/node_modules"
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    links:
+      - db
 
   nginx:
     restart: always
@@ -62,12 +62,12 @@ services:
     - "80:80"
     depends_on:
     - frontend
-    # - backend
+    - backend
 
 volumes:
   nginx:
   frontend:
-  # backend:
-  # db:
-  #   driver: local
-  #   name: db
+  backend:
+  db:
+    driver: local
+    name: db
