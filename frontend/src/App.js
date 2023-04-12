@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 function App() {
   const [user, setUser] = useState([]);
   const call = () => {
-    fetch("http://localhost:8000", { method: "GET" })
+    fetch("http://ec2-54-165-37-184.compute-1.amazonaws.com:8000", { method: "GET" })
       .then(async (d) => await d.json())
       .then((d) => {
         console.log(d);
@@ -15,7 +15,7 @@ function App() {
   };
   useEffect(() => [call()], []);
   const add = () => {
-    fetch("http://localhost:8000", { method: "POST" })
+    fetch("http://ec2-54-165-37-184.compute-1.amazonaws.com:8000", { method: "POST" })
       .then(async (d) => await d.json())
       .then((d) => {
         call()
